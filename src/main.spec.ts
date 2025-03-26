@@ -4,8 +4,9 @@ import {
   calculaTotales,
   dosDecimales,
   LineaTicket,
+  totalTipoIva,
 } from "./main";
-import { ResultadoTotalTicket } from "./model";
+import { ResultadoTotalTicket, TotalPorTipoIva } from "./model";
 
 describe("calcularPrecioProducto", () => {
   it("Debe calcular bien el valor total", () => {
@@ -159,8 +160,50 @@ describe("dosDecimales", () => {
   it("Prueba", () => {
     let valor: number = 4.12341;
 
-    let resultado = dosDecimales(valor)
+    let resultado = dosDecimales(valor);
     let expectResultado = 4.12;
+
+    expect(resultado).toStrictEqual(expectResultado);
+  });
+});
+
+describe("totalTipoIva", () => {
+  it("Prueba totalTipoIva", () => {
+    let ejemploProductos: LineaTicket[] = [
+      {
+        nombre: "Perfume",
+        cantidad: 3,
+        precionSinIva: 60,
+        tipoIva: "general",
+        precioConIva: 72.6,
+      },
+      {
+        nombre: "Leche",
+        cantidad: 6,
+        precionSinIva: 6,
+        tipoIva: "superreducidoC",
+        precioConIva: 6,
+      },
+      {
+        nombre: "Zumo",
+        cantidad: 1,
+        precionSinIva: 10,
+        tipoIva: "general",
+        precioConIva: 12.1,
+      },
+    ];
+
+    let resultado = totalTipoIva(ejemploProductos);
+    let expectResultado: TotalPorTipoIva[] = [
+      {
+        tipoIva: "general",
+        cuantia: 14.7,
+      },
+      {
+        tipoIva: "superreducidoC",
+        cuantia: 0,
+      },
+    ];
 
     expect(resultado).toStrictEqual(expectResultado);
   });
