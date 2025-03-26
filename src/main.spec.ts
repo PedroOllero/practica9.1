@@ -5,6 +5,6 @@ describe("dummy specs", () => {
     // Act
 
     // Assert
-    expect(true).toBeTruthy();
+    expect(true).toBe();
   });
 });
