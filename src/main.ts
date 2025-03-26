@@ -1,85 +1,52 @@
-type TipoIva =
-  | "general"
-  | "reducido"
-  | "superreducidoA"
-  | "superreducidoB"
-  | "superreducidoC"
-  | "sinIva";
+import { LineaTicket, Producto, ResultadoLineaTicket } from "./model";
 
-interface Producto {
-  nombre: string;
-  precio: number;
-  tipoIva: TipoIva;
+const sacarIva = (producto: Producto): number => {
+    if (producto.tipoIva === "general"){
+        return producto.precio * 0.21;
+    }
+    if (producto.tipoIva === "reducido"){
+        return producto.precio * 0.10;
+    }
+    if (producto.tipoIva === "sinIva"){
+        return producto.precio * 0.00;
+    }
+    if (producto.tipoIva === "superreducidoA"){
+        return producto.precio * 0.05;
+    }
+    if (producto.tipoIva === "superreducidoB"){
+        return producto.precio * 0.04; 
+    }
+    if (producto.tipoIva === "superreducidoC"){
+        return producto.precio * 0.00;
+    }
+
+    return 0;
 }
 
-interface LineaTicket {
-  producto: Producto;
-  cantidad: number;
+const precioConIva = (producto: LineaTicket) => {
+    if (producto !== undefined || producto !== null) {
+        const precioIva: number = sacarIva(producto.producto);
+        let precioConIva = ((precioIva) + producto.producto.precio) * producto.cantidad
+        return precioConIva;
+    }
+    return 0;
 }
 
-const productos: LineaTicket[] = [
-  {
-    producto: {
-      nombre: "Legumbres",
-      precio: 2,
-      tipoIva: "general",
-    },
-    cantidad: 2,
-  },
-  {
-    producto: {
-      nombre: "Perfume",
-      precio: 20,
-      tipoIva: "general",
-    },
-    cantidad: 3,
-  },
-  {
-    producto: {
-      nombre: "Leche",
-      precio: 1,
-      tipoIva: "superreducidoC",
-    },
-    cantidad: 6,
-  },
-  {
-    producto: {
-      nombre: "Lasaña",
-      precio: 5,
-      tipoIva: "superreducidoA",
-    },
-    cantidad: 1,
-  },
-];
-
-const calculaTicket = (lineasTicket: LineaTicket[]) => {
-  lineasTicket
-    .reduce
-    // ...
-    ();
+export const calculaTicket = (lineasTicket: LineaTicket[]): ResultadoLineaTicket[] => {
+    let resultadoLineasTicket: ResultadoLineaTicket[] = lineasTicket.map((lineaTicket) => {
+        return {
+            nombre: lineaTicket.producto.nombre,
+            cantidad: lineaTicket.cantidad,
+            precionSinIva: calcularPrecioProducto(lineaTicket),
+            tipoIva: lineaTicket.producto.tipoIva,
+            precioConIva: precioConIva(lineaTicket)
+        };
+    });
+    return resultadoLineasTicket;
 };
 
-interface ResultadoLineaTicket {
-  nombre: string;
-  cantidad: number;
-  precionSinIva: number;
-  tipoIva: TipoIva;
-  precioConIva: number;
-}
 
-interface ResultadoTotalTicket {
-  totalSinIva: number;
-  totalConIva: number;
-  totalIva: number;
-}
-
-interface TotalPorTipoIva {
-  tipoIva: TipoIva;
-  cuantia: number;
-}
-
-interface TicketFinal {
-  lineas: ResultadoLineaTicket[];
-  total: ResultadoTotalTicket;
-  desgloseIva: TotalPorTipoIva[];
+export const calcularPrecioProducto = (producto: LineaTicket): number => {
+    const totalProducto = producto.cantidad * producto.producto.precio
+    return totalProducto;
 }
