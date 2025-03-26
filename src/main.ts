@@ -1,4 +1,4 @@
-import { LineaTicket, Producto, ResultadoLineaTicket } from "./model";
+import { LineaTicket, Producto, ResultadoLineaTicket, ResultadoTotalTicket, TicketFinal, TotalPorTipoIva } from "./model";
 
 const sacarIva = (producto: Producto): number => {
     if (producto.tipoIva === "general"){
@@ -26,10 +26,15 @@ const sacarIva = (producto: Producto): number => {
 const precioConIva = (producto: LineaTicket) => {
     if (producto !== undefined || producto !== null) {
         const precioIva: number = sacarIva(producto.producto);
-        let precioConIva = ((precioIva) + producto.producto.precio) * producto.cantidad
+        let precioConIva = dosDecimales(((precioIva) + producto.producto.precio) * producto.cantidad)
         return precioConIva;
     }
     return 0;
+}
+
+export const calcularPrecioProducto = (producto: LineaTicket): number => {
+    const totalProducto = producto.cantidad * producto.producto.precio
+    return totalProducto;
 }
 
 export const calculaTicket = (lineasTicket: LineaTicket[]): ResultadoLineaTicket[] => {
@@ -45,8 +50,38 @@ export const calculaTicket = (lineasTicket: LineaTicket[]): ResultadoLineaTicket
     return resultadoLineasTicket;
 };
 
+export const calculaTotales = (resultadoLineasTicket: ResultadoLineaTicket[]): ResultadoTotalTicket => {
+    let calculosTotales: ResultadoTotalTicket = {
+        totalSinIva: sumadorSinIva(resultadoLineasTicket),
+        totalConIva: sumadorConIva(resultadoLineasTicket),
+        totalIva: dosDecimales(sumadorConIva(resultadoLineasTicket) - sumadorSinIva(resultadoLineasTicket))
+    }
+    return calculosTotales;
+    
+}
 
-export const calcularPrecioProducto = (producto: LineaTicket): number => {
-    const totalProducto = producto.cantidad * producto.producto.precio
-    return totalProducto;
+export const sumadorConIva = (items: ResultadoLineaTicket[]) => {
+    let arrayConIva = items.map((item) => item.precioConIva)
+    let resultado = arrayConIva.reduce((acc, n) => acc + n, 0)
+    return resultado;
+}
+
+export const sumadorSinIva = (items: ResultadoLineaTicket[]) => {
+    let arraySinIva = items.map((item) => item.precionSinIva)
+    let resultado = arraySinIva.reduce((acc, n) => acc + n, 0)
+    return resultado;
+}
+
+export const dosDecimales = (item: number): number => {
+    let resultado = parseFloat((item).toFixed(2))
+    return resultado;
+}
+
+
+const totalTipoIva = (): TotalPorTipoIva => {
+
+}
+
+const ticketFinal = (): TicketFinal => {
+    
 }
