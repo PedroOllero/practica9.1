@@ -1,4 +1,4 @@
-import { LineaTicket } from "./main";
+import { LineaTicket } from "./model";
 
 export const productos: LineaTicket[] = [
     {

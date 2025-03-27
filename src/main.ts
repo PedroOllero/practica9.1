@@ -103,7 +103,25 @@ export const totalTipoIva = (
         cuantia:dosDecimales((item.precioConIva)-(item.precionSinIva))
     };
   });
-  return arrayTotalIva;
+
+  let resultado = sumarPorTipo(arrayTotalIva)
+
+
+  return resultado;
 };
 
 const ticketFinal = (): TicketFinal => {};
+
+const sumarPorTipo = (items: TotalPorTipoIva[]): TotalPorTipoIva[] => {
+  const resultado = items.reduce<Record<string, TotalPorTipoIva>>((acc, item) => {
+    if (acc[item.tipoIva]) {
+      acc[item.tipoIva].cuantia += item.cuantia;
+    } else {
+      acc[item.tipoIva] = { ...item };
+    }
+    return acc;
+  }, {});
+  
+  const ArraySumadoTipos = Object.values(resultado);
+  return ArraySumadoTipos;
+}

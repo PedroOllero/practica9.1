@@ -207,4 +207,44 @@ describe("totalTipoIva", () => {
 
     expect(resultado).toStrictEqual(expectResultado);
   });
+
+  it("Prueba totalTipoIva", () => {
+    let ejemploProductos: LineaTicket[] = [
+      {
+        nombre: "Perfume",
+        cantidad: 4,
+        precionSinIva: 80,
+        tipoIva: "general",
+        precioConIva: 96.80,
+      },
+      {
+        nombre: "Leche",
+        cantidad: 3,
+        precionSinIva: 20,
+        tipoIva: "reducido",
+        precioConIva: 22,
+      },
+      {
+        nombre: "Zumo",
+        cantidad: 1,
+        precionSinIva: 100,
+        tipoIva: "reducido",
+        precioConIva: 110,
+      },
+    ];
+
+    let resultado = totalTipoIva(ejemploProductos);
+    let expectResultado: TotalPorTipoIva[] = [
+      {
+        tipoIva: "general",
+        cuantia: 16.8,
+      },
+      {
+        tipoIva: "reducido",
+        cuantia: 12,
+      },
+    ];
+
+    expect(resultado).toStrictEqual(expectResultado);
+  });
 });
