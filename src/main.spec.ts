@@ -3,10 +3,9 @@ import {
   calculaTicket,
   calculaTotales,
   dosDecimales,
-  LineaTicket,
   totalTipoIva,
 } from "./main";
-import { ResultadoTotalTicket, TotalPorTipoIva } from "./model";
+import { ResultadoTotalTicket, TotalPorTipoIva, LineaTicket, ResultadoLineaTicket } from "./model";
 
 describe("calcularPrecioProducto", () => {
   it("Debe calcular bien el valor total", () => {
@@ -125,7 +124,7 @@ describe("calculaTicket", () => {
 describe("calculaTotales", () => {
   it("Comrpobacion", () => {
     // Arrange
-    let ejemploProductos: LineaTicket[] = [
+    let ejemploProductos: ResultadoLineaTicket[] = [
       {
         nombre: "Perfume",
         cantidad: 3,
@@ -169,7 +168,7 @@ describe("dosDecimales", () => {
 
 describe("totalTipoIva", () => {
   it("Prueba totalTipoIva", () => {
-    let ejemploProductos: LineaTicket[] = [
+    let ejemploProductos: ResultadoLineaTicket[] = [
       {
         nombre: "Perfume",
         cantidad: 3,
@@ -209,7 +208,7 @@ describe("totalTipoIva", () => {
   });
 
   it("Prueba totalTipoIva", () => {
-    let ejemploProductos: LineaTicket[] = [
+    let ejemploProductos: ResultadoLineaTicket[] = [
       {
         nombre: "Perfume",
         cantidad: 4,

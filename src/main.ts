@@ -1,3 +1,4 @@
+import { productos } from "./const";
 import {
   LineaTicket,
   Producto,
@@ -110,8 +111,6 @@ export const totalTipoIva = (
   return resultado;
 };
 
-const ticketFinal = (): TicketFinal => {};
-
 const sumarPorTipo = (items: TotalPorTipoIva[]): TotalPorTipoIva[] => {
   const resultado = items.reduce<Record<string, TotalPorTipoIva>>((acc, item) => {
     if (acc[item.tipoIva]) {
@@ -125,3 +124,20 @@ const sumarPorTipo = (items: TotalPorTipoIva[]): TotalPorTipoIva[] => {
   const ArraySumadoTipos = Object.values(resultado);
   return ArraySumadoTipos;
 }
+
+const ticketFinal = (productos: LineaTicket[]): TicketFinal => {
+  let lineasFinal = calculaTicket(productos);
+  let totalFinal = calculaTotales(lineasFinal);
+  let desgloseFinal = totalTipoIva(lineasFinal);
+  let ticketFinal: TicketFinal = {
+    lineas: lineasFinal,
+    total: totalFinal,
+    desgloseIva: desgloseFinal
+  }
+
+  return ticketFinal;
+};
+
+let resultado = ticketFinal(productos)
+
+console.log(resultado)
